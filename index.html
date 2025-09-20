@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Koperasi Desa Merah Putih</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h2 {
+            font-size: 1.2em;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .project-title {
+            color: white;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .project-description {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .project-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(238, 90, 36, 0.3);
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        .project-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(238, 90, 36, 0.4);
+            background: linear-gradient(45deg, #ee5a24, #ff6b6b);
+        }
+
+        .project-button.secondary {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+        }
+
+        .project-button.secondary:hover {
+            background: linear-gradient(45deg, #44a08d, #4ecdc4);
+            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+        }
+
+        .quick-access {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .quick-access h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .quick-link {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .quick-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 40px;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .project-card {
+                padding: 20px;
+            }
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4ecdc4;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 Koperasi Desa Merah Putih</h1>
+            <h2>📍 Kalurahan Kedungsari - Dashboard Admin</h2>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="project-card">
+                <div class="project-title">
+                    📊 Google Apps Script System
+                </div>
+                <div class="project-description">
+                    <span class="status-indicator"></span>Sistem manajemen dan administrasi koperasi berbasis Google Apps Script. Akses untuk pengelolaan data anggota, transaksi, dan laporan keuangan.
+                </div>
+                <a href="https://script.google.com/macros/s/AKfycbxbX3URhG5Ttbgy2JUMYlTKLhFOKiYfYqM6p1y_xZYPJ2RNQWEZIBXBRp22fpMotO1j/exec" 
+                   target="_blank" 
+                   class="project-button">
+                   🚀 Buka Apps Script System
+                </a>
+            </div>
+
+            <div class="project-card">
+                <div class="project-title">
+                    🌐 Website Koperasi
+                </div>
+                <div class="project-description">
+                    <span class="status-indicator"></span>Website resmi Koperasi Desa Merah Putih yang dihosting di GitHub Pages. Berisi informasi publik, berita, dan layanan online untuk anggota.
+                </div>
+                <a href="https://kdmp-kedungsari.github.io/koperasi-website/" 
+                   target="_blank" 
+                   class="project-button secondary">
+                   🌍 Kunjungi Website
+                </a>
+            </div>
+
+            <div class="project-card">
+                <div class="project-title">
+                    ⚙️ Panel Administrasi
+                </div>
+                <div class="project-description">
+                    <span class="status-indicator"></span>Panel khusus untuk administrator koperasi. Kelola user, setting sistem, backup data, dan monitoring aktivitas.
+                </div>
+                <button onclick="alert('URL akan ditambahkan sesuai kebutuhan')" class="project-button">
+                    🔧 Panel Admin (Coming Soon)
+                </button>
+            </div>
+
+            <div class="project-card">
+                <div class="project-title">
+                    📈 Dashboard Analytics
+                </div>
+                <div class="project-description">
+                    <span class="status-indicator"></span>Monitoring real-time performa koperasi, statistik anggota, analisis keuangan, dan laporan komprehensif.
+                </div>
+                <button onclick="alert('Fitur analytics akan segera tersedia')" class="project-button secondary">
+                    📊 Lihat Analytics (Coming Soon)
+                </button>
+            </div>
+        </div>
+
+        <div class="quick-access">
+            <h3>🔗 Quick Access</h3>
+            <div class="quick-links">
+                <a href="#" class="quick-link" onclick="copyToClipboard('Apps Script')">📋 Copy Apps Script URL</a>
+                <a href="#" class="quick-link" onclick="copyToClipboard('Website')">📋 Copy Website URL</a>
+                <a href="https://github.com/kdmp-kedungsari" target="_blank" class="quick-link">💻 GitHub Repository</a>
+                <a href="https://drive.google.com" target="_blank" class="quick-link">📁 Google Drive</a>
+                <a href="https://sheets.google.com" target="_blank" class="quick-link">📊 Google Sheets</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2024 Koperasi Desa Merah Putih - Kalurahan Kedungsari</p>
+            <p>Dashboard Admin - Versi 1.0</p>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi untuk copy URL ke clipboard
+        function copyToClipboard(type) {
+            let url = '';
+            if (type === 'Apps Script') {
+                url = 'https://script.google.com/macros/s/AKfycbxbX3URhG5Ttbgy2JUMYlTKLhFOKiYfYqM6p1y_xZYPJ2RNQWEZIBXBRp22fpMotO1j/exec';
+            } else if (type === 'Website') {
+                url = 'https://kdmp-kedungsari.github.io/koperasi-website/';
+            }
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => {
+                    showNotification(`✅ URL ${type} berhasil disalin!`);
+                });
+            } else {
+                // Fallback untuk browser lama
+                const textArea = document.createElement('textarea');
+                textArea.value = url;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification(`✅ URL ${type} berhasil disalin!`);
+            }
+        }
+
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(78, 205, 196, 0.9);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                z-index: 1000;
+                font-weight: 600;
+                backdrop-filter: blur(10px);
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Tambahkan efek loading saat halaman dimuat
+        window.addEventListener('load', function() {
+            const cards = document.querySelectorAll('.project-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(30px)';
+                    card.style.transition = 'all 0.6s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 150);
+            });
+        });
+    </script>
+</body>
+</html>
